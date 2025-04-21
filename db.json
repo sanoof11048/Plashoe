@@ -1,0 +1,406 @@
+{
+  "users": [
+    {
+      "id": "1360",
+      "name": "Iam Admin",
+      "email": "admin@gmail.com",
+      "password": "123456",
+      "cpassword": "123456",
+      "cart": [],
+      "orders": [
+        {
+          "id": "1",
+          "category": "Female",
+          "name": "Nike Air Max 2",
+          "description": "Dilshad Kundan",
+          "price": 100000,
+          "size": [
+            7,
+            9,
+            6
+          ],
+          "stock": 5000,
+          "itemcount": 1,
+          "image_url": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_500,h_500/global/312102/01/sv01/fnd/IND/fmt/png/LQDCELL-Method-Res-Men's-Training-Shoes",
+          "status": "Order Confirmed"
+        },
+        {
+          "id": "2",
+          "category": "Female",
+          "name": "PUMA RAPIDSANDS",
+          "description": "Comfortable and stylish running shoes with Air Max technology, perfect for long runs.",
+          "price": 199,
+          "size": [
+            7,
+            8,
+            9
+          ],
+          "stock": 50,
+          "itemcount": 1,
+          "image_url": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_500,h_500/global/308042/02/sv01/fnd/IND/fmt/png/BMW-M-Motorsport-Maco-2.0-Unisex-Driving-Shoes",
+          "status": "Confirmed"
+        },
+        {
+          "id": "7",
+          "category": "Female",
+          "name": "PUMA Seriah",
+          "description": "Comfortable and stylish running shoes with Air Max technology, perfect for long runs.",
+          "price": 400,
+          "size": [
+            7,
+            8,
+            9
+          ],
+          "stock": 50,
+          "image_url": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_500,h_500/global/311108/01/sv01/fnd/IND/fmt/png/PUMA-Questblitz-Men's-Running-Shoes",
+          "itemcount": 1,
+          "status": "Delivered"
+        },
+        {
+          "id": "6",
+          "category": "Male",
+          "name": "PUMA Exotine",
+          "description": "Comfortable and stylish running shoes with Air Max technology, perfect for long runs.",
+          "price": 100,
+          "size": [
+            7,
+            8,
+            9
+          ],
+          "stock": 50,
+          "image_url": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_500,h_500/global/310669/02/sv01/fnd/IND/fmt/png/PUMA-RAPIDSANDS-Men's-Running-Shoes",
+          "itemcount": 1,
+          "status": "Delivered"
+        },
+        {
+          "id": "3",
+          "category": "Male",
+          "name": "Nike Pegasus Trail 5",
+          "description": "Comfortable and stylish running shoes with Air Max technology, perfect for long runs.",
+          "price": 210,
+          "size": [
+            7,
+            8,
+            9
+          ],
+          "stock": 50,
+          "image_url": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_500,h_500/global/308042/01/sv01/fnd/IND/fmt/png/BMW-M-Motorsport-Maco-2.0-Unisex-Driving-Shoes",
+          "itemcount": 1,
+          "status": "Confirmed"
+        },
+        {
+          "id": "5",
+          "category": "Female",
+          "name": "PUMA Swift Pulse ",
+          "description": "Comfortable and stylish running shoes with Air Max technology, perfect for long runs.",
+          "price": 140,
+          "size": [
+            7,
+            8,
+            9
+          ],
+          "stock": 50,
+          "image_url": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_500,h_500/global/398139/01/sv01/fnd/IND/fmt/png/Super-Team-No-14-Unisex-Sneakers",
+          "itemcount": 1
+        },
+        {
+          "id": "7",
+          "category": "Female",
+          "name": "PUMA Seriah",
+          "description": "Comfortable and stylish running shoes with Air Max technology, perfect for long runs.",
+          "price": 400,
+          "size": [
+            7,
+            8,
+            9
+          ],
+          "stock": 50,
+          "image_url": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_500,h_500/global/311108/01/sv01/fnd/IND/fmt/png/PUMA-Questblitz-Men's-Running-Shoes",
+          "itemcount": 1
+        }
+      ]
+    },
+    {
+      "id": "a78f",
+      "name": "Habeeb@gmail.com",
+      "email": "habeeb@gmail.com",
+      "password": "123123",
+      "cpassword": "123123",
+      "cart": [],
+      "orders": [],
+      "status": "active"
+    },
+    {
+      "id": "f696",
+      "name": "Sanoof",
+      "email": "sanoof@gmail.com",
+      "password": "123456",
+      "cpassword": "123456",
+      "cart": [],
+      "orders": [
+        {
+          "id": "2",
+          "category": "Female",
+          "name": "PUMA RAPIDSANDS",
+          "description": "Comfortable and stylish running shoes with Air Max technology, perfect for long runs.",
+          "price": 199,
+          "size": [
+            7,
+            8,
+            9
+          ],
+          "stock": 50,
+          "itemcount": 1,
+          "image_url": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_500,h_500/global/308042/02/sv01/fnd/IND/fmt/png/BMW-M-Motorsport-Maco-2.0-Unisex-Driving-Shoes",
+          "status": "Delivered"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": "3e29",
+      "name": "User",
+      "email": "user@gmail.com",
+      "password": "123123",
+      "cpassword": "123123",
+      "cart": [],
+      "orders": [
+        {
+          "id": "2",
+          "category": "Female",
+          "name": "PUMA RAPIDSANDS",
+          "description": "Comfortable and stylish running shoes with Air Max technology, perfect for long runs.",
+          "price": 199,
+          "size": [
+            7,
+            8,
+            9
+          ],
+          "stock": 50,
+          "itemcount": 3,
+          "image_url": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_500,h_500/global/308042/02/sv01/fnd/IND/fmt/png/BMW-M-Motorsport-Maco-2.0-Unisex-Driving-Shoes"
+        },
+        {
+          "id": "4",
+          "category": "Female",
+          "name": "Air Jordan 4 RM4",
+          "description": "Comfortable and stylish running shoes with Air Max technology, perfect for long runs.",
+          "price": 160,
+          "size": [
+            7,
+            8,
+            9
+          ],
+          "stock": 50,
+          "image_url": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_500,h_500/global/308574/01/sv01/fnd/IND/fmt/png/Scuderia-Ferrari-Tiburion-Unisex-Motorsport-Sneakers",
+          "itemcount": 1
+        }
+      ],
+      "status": "active"
+    }
+  ],
+  "products": [
+    {
+      "id": "1",
+      "category": "Female",
+      "name": "Nike Air Max 2",
+      "description": "Dilshad Kundan",
+      "price": 100000,
+      "size": [
+        7,
+        9,
+        6,
+        5
+      ],
+      "stock": 5000,
+      "itemcount": 0,
+      "image_url": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_500,h_500/global/312102/01/sv01/fnd/IND/fmt/png/LQDCELL-Method-Res-Men's-Training-Shoes"
+    },
+    {
+      "id": "2",
+      "category": "Female",
+      "name": "PUMA RAPIDSANDS",
+      "description": "Comfortable and stylish running shoes with Air Max technology, perfect for long runs.",
+      "price": 199,
+      "size": [
+        7,
+        8,
+        9,
+        6,
+        12
+      ],
+      "stock": 50,
+      "itemcount": 0,
+      "image_url": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_500,h_500/global/308042/02/sv01/fnd/IND/fmt/png/BMW-M-Motorsport-Maco-2.0-Unisex-Driving-Shoes"
+    },
+    {
+      "id": "3",
+      "category": "Male",
+      "name": "Nike Pegasus Trail 5",
+      "description": "Comfortable and stylish running shoes with Air Max technology, perfect for long runs.",
+      "price": 210,
+      "size": [
+        7,
+        8,
+        9
+      ],
+      "stock": 50,
+      "image_url": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_500,h_500/global/308042/01/sv01/fnd/IND/fmt/png/BMW-M-Motorsport-Maco-2.0-Unisex-Driving-Shoes"
+    },
+    {
+      "id": "4",
+      "category": "Female",
+      "name": "Air Jordan 4 RM4",
+      "description": "Comfortable and stylish running shoes with Air Max technology, perfect for long runs.",
+      "price": 160,
+      "size": [
+        7,
+        8,
+        9
+      ],
+      "stock": 50,
+      "image_url": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_500,h_500/global/308574/01/sv01/fnd/IND/fmt/png/Scuderia-Ferrari-Tiburion-Unisex-Motorsport-Sneakers"
+    },
+    {
+      "id": "5",
+      "category": "Female",
+      "name": "PUMA Swift Pulse ",
+      "description": "Comfortable and stylish running shoes with Air Max technology, perfect for long runs.",
+      "price": 140,
+      "size": [
+        7,
+        8,
+        9
+      ],
+      "stock": 50,
+      "image_url": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_500,h_500/global/398139/01/sv01/fnd/IND/fmt/png/Super-Team-No-14-Unisex-Sneakers"
+    },
+    {
+      "id": "6",
+      "category": "Male",
+      "name": "PUMA Exotine",
+      "description": "Comfortable and stylish running shoes with Air Max technology, perfect for long runs.",
+      "price": 100,
+      "size": [
+        7,
+        8,
+        9
+      ],
+      "stock": 50,
+      "image_url": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_500,h_500/global/310669/02/sv01/fnd/IND/fmt/png/PUMA-RAPIDSANDS-Men's-Running-Shoes"
+    },
+    {
+      "id": "7",
+      "category": "Female",
+      "name": "PUMA Seriah",
+      "description": "Comfortable and stylish running shoes with Air Max technology, perfect for long runs.",
+      "price": 400,
+      "size": [
+        7,
+        8,
+        9
+      ],
+      "stock": 50,
+      "image_url": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_500,h_500/global/311108/01/sv01/fnd/IND/fmt/png/PUMA-Questblitz-Men's-Running-Shoes"
+    },
+    {
+      "id": "8",
+      "discountPercentage": "10",
+      "category": "Female",
+      "name": "Nizza RF Hi Shoes",
+      "description": "Comfortable and stylish running shoes with Air Max technology, perfect for long runs.",
+      "price": 320,
+      "size": [
+        7,
+        8,
+        9
+      ],
+      "stock": 50,
+      "image_url": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_500,h_500/global/311127/01/sv01/fnd/IND/fmt/png/PUMA-Surgestride-Men's-Training-Shoes"
+    },
+    {
+      "id": "9",
+      "category": "Male",
+      "name": "SL 72 RS Shoes",
+      "description": "Comfortable and stylish running shoes with Air Max technology, perfect for long runs.",
+      "price": 240,
+      "size": [
+        7,
+        8,
+        9
+      ],
+      "stock": 50,
+      "image_url": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_500,h_500/global/306874/02/sv01/fnd/IND/fmt/png/BMW-M-Motorsport-Drift-Cat-Delta-Unisex-Sneakers"
+    },
+    {
+      "id": "10",
+      "category": "Female",
+      "name": "ADI RUDH SHOES",
+      "description": "Comfortable and stylish running shoes with Air Max technology, perfect for long runs.",
+      "price": 200,
+      "size": [
+        7,
+        8,
+        9
+      ],
+      "stock": 50,
+      "image_url": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_500,h_500/global/311850/02/sv01/fnd/IND/fmt/png/Softride-Premier-one8-Res-Unisex-Running-Shoes"
+    },
+    {
+      "id": "11",
+      "category": "Male",
+      "name": "WIND RAISER SHOES",
+      "description": "Comfortable and stylish running shoes with Air Max technology, perfect for long runs.",
+      "price": 90,
+      "size": [
+        7,
+        8,
+        9
+      ],
+      "stock": 50,
+      "image_url": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_500,h_500/global/378513/03/sv01/fnd/IND/fmt/png/Smooth-Walk-Men's-Running-Shoes"
+    },
+    {
+      "id": "12",
+      "category": "Female",
+      "name": "Classic Rubber M4",
+      "description": "Comfortable and stylish running shoes with Air Max technology, perfect for long runs.",
+      "price": 110,
+      "size": [
+        7,
+        8,
+        9
+      ],
+      "stock": 50,
+      "image_url": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_500,h_500/global/379993/02/sv01/fnd/IND/fmt/png/Flyer-Runner-Engineered-Knit-Men's-Shoes"
+    },
+    {
+      "id": "b455",
+      "category": "",
+      "name": "Shoe Puma",
+      "description": "shoe",
+      "price": "199",
+      "size": [
+        4,
+        7,
+        10
+      ],
+      "stock": 90,
+      "image_url": "https://github.com/sanoof11048/react-frontend-shoe-E-commerce/blob/main/src/components/Orders.jsx"
+    },
+    {
+      "id": "5f13",
+      "category": "",
+      "name": "Shoe Puma",
+      "description": "shoe",
+      "price": "199",
+      "size": [
+        4,
+        7,
+        10
+      ],
+      "stock": 90,
+      "image_url": "https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_500,h_500/global/308042/02/sv01/fnd/IND/fmt/png/BMW-M-Motorsport-Maco-2.0-Unisex-Driving-Shoes"
+    }
+  ]
+}
