@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import axios from "axios";
+import axiosAuth from "../api/axiosAuth";
 
 const ProductContext = createContext();
 
@@ -15,7 +15,7 @@ export const ProductProvider = ({ children }) => {
 
   useEffect(() => {
     setIsLoading(true);
-    axios.get("http://plashoe.runasp.net/api/Product/get-all")
+    axiosAuth.get("/Product/get-all")
       .then((res) => {
         setProducts(res.data);
         setFilterProducts(res.data);
@@ -33,7 +33,7 @@ export const ProductProvider = ({ children }) => {
       filterByCategory(category);
       return;
     }
-    axios.get(`https://localhost:7072/api/Product/search/${searchValue}`)
+    axiosAuth.get(`/Product/search/${searchValue}`)
     .then((res)=>{
       setFilterProducts(res.data)
     })
@@ -45,21 +45,11 @@ export const ProductProvider = ({ children }) => {
       setFilterProducts(products);
     }
     else{
-      axios.get(`https://localhost:7072/api/Product/category/${category}`)
+      axiosAuth.get(`/Product/category/${category}`)
       .then((res)=>{
   setFilterProducts(res.data)
       })
     }
-    // https://localhost:7072/api/Product/category/Men
-    // setCategory(category);
-    // if (category === "All") {
-    //   setFilterProducts(products);
-    // } else {
-    //   setFilterProducts(
-    //     products.filter((product) => product.category === category)
-    //   );
-    // }
-
   };
 
   return (

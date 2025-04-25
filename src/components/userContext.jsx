@@ -1,7 +1,7 @@
-import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
+import axiosAuth from "../api/axiosAuth";
 
 const UserContext = createContext();
 export const useUser = () => useContext(UserContext);
@@ -11,13 +11,6 @@ export const UserProvider = ({ children }) => {
   const [amount, setAmount] = useState(0);
   const [orders, setOrders] = useState([]);
   const navigate = useNavigate()
-
-  const axiosAuth = axios.create({
-    baseURL: "https://localhost:7072/api",
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`
-    }
-  });
 
   useEffect(() => {
     const userId = localStorage.getItem("id");

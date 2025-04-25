@@ -1,11 +1,12 @@
-// src/api/axiosAuth.js
 import axios from "axios";
 
 const axiosAuth = axios.create({
-  baseURL: "http://plashoe.runasp.net/api"
+  baseURL: import.meta.env.DEV
+    ? "http://plashoe.runasp.net/api"
+    : "/proxy"
 });
 
-// Automatically add token to every request
+
 axiosAuth.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
@@ -13,5 +14,4 @@ axiosAuth.interceptors.request.use((config) => {
   }
   return config;
 });
-
 export default axiosAuth;

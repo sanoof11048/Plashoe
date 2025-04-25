@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "./userContext.jsx";
-import axios from "axios";
 import Navbar from "./Navbar.jsx";
 import Footer from "../Base/footer.jsx";
 import { ShoppingCart, Trash2, Plus, Minus, ArrowRight, Package } from "lucide-react";
@@ -55,24 +54,16 @@ setPrice(response.data.data.totalPrice)
 
   const handleInc = (productId) => {
 
-    axios
-      .patch(`http://plashoe.runasp.net/api/Cart/increase/${user.id}/${productId}`,{},{
-        headers:{
-          Authorization:`Bearer ${localStorage.getItem("token")}`
-        }
-      }).then((res)=>{
+    axiosAuth
+      .patch(`/api/Cart/increase/${user.id}/${productId}`).then((res)=>{
         console.log(res.data)
         getCart()
       })
   };
 
   const handleDec = (productId) => {
-    axios
-      .patch(`http://plashoe.runasp.net/api/Cart/decrease/${user.id}/${productId}`,{},{
-        headers:{
-          Authorization:`Bearer ${localStorage.getItem("token")}`
-        }
-      }).then((res)=>{
+    axiosAuth
+      .patch(`/Cart/decrease/${user.id}/${productId}`).then((res)=>{
         console.log(res.data.message)
         // const type= d
         res.data.statusCode == 200? toast.success(res.data.message) : toast.error(res.data.message) 

@@ -2,7 +2,6 @@ import React, { useEffect, useState, useMemo } from "react";
 import Navbar from "./Navbar";
 import { useProductContext } from "./ProductContext";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useUser } from "./userContext";
 import { toast } from "react-hot-toast";
 import "react-toastify/dist/ReactToastify.css";
@@ -13,6 +12,7 @@ import { motion } from "framer-motion";
 import Modal from "../Base/modal";
 import Swal from "sweetalert2";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import axiosAuth from "../api/axiosAuth";
 
 // Product Card with Animation
 
@@ -134,27 +134,10 @@ function Products() {
   const findInWishList = (productId) => {
     return wishList.some(item => item.productId === productId);
   };
-
-  // const toggleWishlist = async (productId) => {
-  //   const userId = localStorage.getItem("id")
-  //   if (wishlist.includes(productId)) {
-  //     await axios.delete(`https://localhost:7072/api/WishList/delete`, {
-  //       params: { userId, productId },
-  //       headers: {
-  //         'Authorization': `Bearer ${token}`
-  //       }
-  //     });
-  //     setWishList((prev) => prev.filter((id) => id !== productId));
-  //   } else {
-  //     await axios.post("/wishlist", { productId });
-  //     setWishlist((prev) => [...prev, productId]);
-  //   }
-  // };
-
   useEffect(() => {
     const userId = localStorage.getItem("id")
 
-    axios.get(`https://localhost:7072/api/WishList/${userId}`, {
+    axiosAuth.get(`api/WishList/${userId}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`
       }
@@ -205,22 +188,15 @@ function Products() {
 
     setWishList(prev => [...prev, { productId }]);
 
-    axios.post(`https://localhost:7072/api/Wishlist/add`, {}, {
+    axiosAuth.post(`/Wishlist/add`, {}, {
       params: {
         productId,
         userId,
       },
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
     })
       .then((res) => {
         toast.success(res.data);
-        axios.get(`https://localhost:7072/api/WishList/${userId}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
-        }).then((res) => {
+        axiosAuth.get(`/WishList/${userId}`).then((res) => {
           setWishList(res.data);
         })
 
@@ -238,13 +214,7 @@ function Products() {
       const userId = localStorage.getItem("id");
       console.log(product)
       setIsLoading(true);
-      axios.post(`https://localhost:7072/api/Cart/add/${userId}/${product.productId}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`, // Attach JWT token
-          },
-        })
+      axiosAuth.post(`/Cart/add/${userId}/${product.productId}`)
 
         .then((res) => {
           console.log(res.data)

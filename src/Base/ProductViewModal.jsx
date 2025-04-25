@@ -11,7 +11,7 @@ const ProductViewModal = ({ item, status, isOpen, onClose }) => {
         if (isOpen && item) {
             setLoading(true);
             setError(null);
-            axios.get(`http://plashoe.runasp.net/api/Product/${item.productId}`)
+            axiosAuth.get(`/Product/${item.productId}`)
                 .then(response => {
                     setProduct(response.data);
                     console.log(response.data)

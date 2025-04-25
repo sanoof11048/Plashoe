@@ -5,6 +5,7 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import InputBox from "../InputBox";
+import axiosAuth from "../../../api/axiosAuth";
 
 const initialValues = {
   name: "",
@@ -39,7 +40,7 @@ const SignUpForm = ({ setIsLogin , setIsActive}) => {
      
 
       
-        await axios.post("https://localhost:7072/api/user/signup", values)
+        await axiosAuth.post("/user/signup", values)
         .then((res)=>{
           console.log(res.data)
           toast.success(`${res.data.message}`)

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Heart, Trash2, ShoppingCart, AlertCircle, Loader } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Navbar from './Navbar';
+import axiosAuth from '../api/axiosAuth';
 
 const WishList = () => {
   const [wishlistItems, setWishlistItems] = useState([]);
@@ -23,11 +23,7 @@ const WishList = () => {
           return;
         }
 
-        const response = await axios.get(`https://localhost:7072/api/WishList/${userId}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
+        const response = await axiosAuth.get(`/WishList/${userId}`);
 
         setWishlistItems(response.data);
         console.log(response.data)
@@ -46,11 +42,8 @@ const WishList = () => {
     try {
       const token = localStorage.getItem('token')
       
-      await axios.delete(`https://localhost:7072/api/WishList/delete`, {
+      await axiosAuth.delete(`/WishList/delete`, {
         params: { userId, productId },
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
       });
       
       setWishlistItems(wishlistItems.filter(item => item.productId !== productId));
@@ -66,13 +59,7 @@ const WishList = () => {
       const userId = localStorage.getItem("id");
       console.log(productId)
         // setIsLoading(true);
-        axios.post(`https://localhost:7072/api/Cart/add/${userId}/${productId}`,
-          {},
-          {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`, 
-          },
-        })
+        axiosAuth.post(`/Cart/add/${userId}/${productId}`)
      
           .then((res) => {
             console.log(res.data)

@@ -105,7 +105,7 @@ function Dash() {
 
   const timeframeOptions = ["daily", "weekly", "monthly"];
 
-  const revenueChartData = ordersList.slice(0, 7).map((order, idx) => ({
+  const revenueChartData = ordersList?.slice(0, 7).map((order, idx) => ({
     name: `#${idx + 1}`,
     revenue: order.totalAmount
   }));

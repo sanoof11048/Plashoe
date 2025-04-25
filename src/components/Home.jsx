@@ -1,6 +1,5 @@
 import React from "react";
 import { useNavigate } from "react-router";
-import Navbar from "./Navbar";
 import About from "../Base/about";
 import Footer from "../Base/footer";
 

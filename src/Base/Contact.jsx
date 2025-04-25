@@ -7,7 +7,6 @@ import { Send, User, Mail, MessageSquare, FileText } from 'lucide-react';
 import BgImg from "../assets/image2.jpg"
 
 function ContactForm() {
-  const navigate = useNavigate();
   const notifyOk = () => toast("Thank you for your message!");
 
   // Animated placeholder state

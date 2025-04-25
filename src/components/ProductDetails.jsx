@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Tag, Star, ArrowLeft, Clock, Package2, ShieldCheck } from "lucide-react";
 import Navbar from "./Navbar";
+import axiosAuth from "../api/axiosAuth";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -12,7 +12,7 @@ const ProductDetails = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await axios.get(`https://localhost:7072/api/Product/${id}`);
+        const res = await axiosAuth.get(`/Product/${id}`);
         setProduct(res.data);
       } catch (err) {
         console.error("Failed to load product", err);

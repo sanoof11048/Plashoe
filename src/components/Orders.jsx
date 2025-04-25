@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useUser } from "./userContext";
 import Navbar from "./Navbar";
-import axios from "axios";
 import {
   PackageOpen,
   CheckCircle,
   AlertCircle,
-  XCircle,
   Calendar,
   Package,
   Truck,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import ProductViewModal from "../Base/ProductViewModal";
+import axiosAuth from "../api/axiosAuth";
 
 function Orders() {
   const { user } = useUser();
@@ -37,12 +36,8 @@ function Orders() {
 
   useEffect(() => {
     if (user) {
-      axios
-        .get(`https://localhost:7072/api/Order/${user.id}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
+      axiosAuth
+        .get(`/api/Order/${user.id}`)
         .then((res) => {
           setOrders(res.data.data || []);
           toast.success(`${res.data.message}`);
@@ -57,12 +52,8 @@ function Orders() {
 
   const handleRemove = (orderId, e) => {
     e.stopPropagation();
-    axios
-      .delete(`https://localhost:7072/api/Order/cancel/${orderId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
+    axiosAuth
+      .delete(`/Order/cancel/${orderId}`)
       .then((res) => {
         toast.success(`${res.data.message}`);
         setOrders(orders.filter((order) => order.id !== orderId));

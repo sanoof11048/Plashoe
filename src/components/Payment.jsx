@@ -3,8 +3,6 @@ import { useUser } from "./userContext";
 import { useNavigate } from "react-router";
 import { CreditCard, Lock, Calendar, User, Mail, MapPin, AlertCircle, CheckCircle, Truck, ChevronDown } from "lucide-react";
 import Navbar from "./Navbar";
-import axios from "axios";
-import toast from "react-hot-toast";
 import axiosAuth from "../api/axiosAuth";
 
 export default function EnhancedPayment() {
@@ -65,7 +63,7 @@ export default function EnhancedPayment() {
 
   const fetchUserAddresses = async (userId) => {
     try {
-      const response = await axios.get(`https://localhost:7072/api/Address/${userId}`);
+      const response = await axiosAuth.get(`/Address/${userId}`);
       setUserAddresses(response.data);
 
       // Set default address if available
@@ -86,7 +84,7 @@ export default function EnhancedPayment() {
   const handleAddNewAddress = async () => {
     try {
       console.log(newAddress)
-      const response = await axios.post(`https://localhost:7072/api/Address/${user.id}`, newAddress);
+      const response = await axiosAuth.post(`/Address/${user.id}`, newAddress);
       if (response.status === 200) {
         await fetchUserAddresses(user.id);
         setShowNewAddressForm(false);
@@ -174,14 +172,7 @@ export default function EnhancedPayment() {
     setFormData({ ...formData, isProcessing: true });
 
     try {
-      const response = await axios.get(
-        `https://localhost:7072/api/Cart/${user.id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await axiosAuth.get(`/Cart/${user.id}`);
 
       const cartItems = response.data.data.items;
 

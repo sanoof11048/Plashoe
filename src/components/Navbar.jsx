@@ -4,7 +4,7 @@ import { RiShoppingCartLine, RiUser3Line, RiMenu2Fill, RiHeart2Fill } from "reac
 import { useNavigate } from "react-router";
 import { useUser } from "./userContext";
 import toast from "react-hot-toast";
-import axios from "axios";
+import axiosAuth from "../api/axiosAuth";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -22,28 +22,19 @@ function Navbar() {
 
     
     try {
-      axios.get(`https://localhost:7072/api/Cart/${user.id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      }).then((response) => {
+      axiosAuth.get(`/Cart/${user.id}`).then((response) => {
         if (response.data.statusCode == 200) {
           const cart = response.data.data.items;
           setCartCount(cart.length);
         }
       });
 
-      axios.get(`https://localhost:7072/api/WishList/${user.id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      }).then((res) => {
+      axiosAuth.get(`/WishList/${user.id}`).then((res) => {
         const wishlist = res.data;
         setWishlistCount(wishlist.length);
       });
       setIsAdmin(user.id === 1);
     } catch (error) {
-      // console.error("Error fetching user data:", error);
       toast.error("Failed to load cart information");
     }
   }
