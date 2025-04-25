@@ -1,185 +1,223 @@
-import React, { useState } from "react";
-import axios from "axios";
-import Swal from "sweetalert2";
-import bgimg from "../assets/adminalert.webp"
-import { useUser } from "../components/userContext";
-import { useNavigate } from "react-router";
+import React, { useState, useEffect } from "react";
+import Modal from "react-modal";
+import axiosAuth from "../api/axiosAuth";
 import toast from "react-hot-toast";
 
+Modal.setAppElement("#root");
 
-const AddProduct=({ openAddProduct, closeAddProduct})=> {
-  const {user}=useUser()
-  const navigate=useNavigate()
-  const [newProduct, setNewProduct] = useState({
-    category: "",
-    name: "",
+const ProductFormModal = ({ isOpen, onClose, onSuccess, product = null }) => {
+  const isEdit = !!product;
+
+  const [formData, setFormData] = useState({
+    productName: "",
+    price: "",
+    stock: "",
+    categoryId: 1,
     description: "",
-    price: 0,
-    size: [],
-    stock: 0,
-    image_url: "",
+    image: "",
   });
-  if (!openAddProduct) return null;
-  if(!user || user.id!=="1360"){
-    return(
-      <div className="flex justify-center  ">
-        <img className="w-full h-full" src={bgimg}/>
-        <button className="absolute top-10 text-gray-500" onClick={()=>navigate(-1)}>Go Back</button>
-    </div>
-    )
-  }
+  const [imagePreview, setImagePreview] = useState("");
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleAddProduct = () => {
-    axios
-      .post("http://localhost:3000/products", newProduct)
-      toast.success("Product added successfully")
-      .then((response) => {
-        toast.success("Product added successfully")
-        // Swal.fire("Success!", "Product added successfully", "success");
-        setNewProduct({
-          category: "",
-          name: "",
-          description: "",
-          price: 0,
-          size: [],
-          stock: 0,
-          image_url: "",
-        });
+  useEffect(() => {
+    if (isEdit && product) {
+      setFormData({ ...product});
+      setImagePreview(product.image);
+    } else {
+      setFormData({
+        productName: "",
+        price: "",
+        stock: "",
+        categoryId: 1,
+        description: "",
+        image: "",
+      });
+      setImagePreview("");
+    }
+    setError("");
+  }, [isOpen, product]);
 
-        // closeAddProduct()
-      })
-      .catch((err) => Swal.fire("Error", "Error adding product", "error"));
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === "price" || name === "stock" || name === "categoryId" ? Number(value) : value,
+    }));
+
+    if (name === "image") {
+      setImagePreview(value);
+    }
   };
 
-  const handleSizeChange = (size) => {
-    setNewProduct((prevProduct) => {
-      const updatedSizes = prevProduct.size.includes(size)
-        ? prevProduct.size.filter((item) => item !== size)
-        : [...prevProduct.size, size];
-      return {
-        ...prevProduct,
-        size: updatedSizes,
-      };
-    });
+  const validate = () => {
+    if (!formData.productName || !formData.price || !formData.description ) {
+      setError("Please fill all required fields.");
+      return false;
+    }
+    return true;
   };
-   
-     
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validate()) return;
+  
+    setIsSubmitting(true);
+    setError("");
+  
+    try {
+      const url = isEdit
+        ? `/Admin/editProduct/${product.productId}`
+        : "/Admin/addProduct";
+      const method = isEdit ? axiosAuth.put : axiosAuth.post;
+  
+      const formDataToSend = new FormData();
+      formDataToSend.append("ProductName", formData.productName);
+      formDataToSend.append("Description", formData.description);
+      formDataToSend.append("Price", formData.price);
+      formDataToSend.append("Stock", formData.stock);
+      formDataToSend.append("CategoryId", formData.categoryId);
+  
+      if (formData.ImageFile) {
+        formDataToSend.append("ImageFile", formData.ImageFile);
+      } else if (formData.image) {
+        formDataToSend.append("Image", formData.image);
+      }
+      
+  
+      // Only send ProductId if editing
+      if (isEdit && product.productId) {
+        formDataToSend.append("ProductId", product.productId);
+      }
+  
+      await method(url, formDataToSend,{
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }).then((res)=>{
+        console.log(res.data)
+        toast.success(res.data.message)
+        console.log(formDataToSend)
+      });
+  
+      onSuccess();
+      onClose();
+    } catch (err) {
+      console.error(err);
+      setError(err.response?.data?.message || "Something went wrong!");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  
 
   return (
-    <div
-    className="absolute  inset-x-0 inset-y-0  bg-gray-800 bg-opacity-50 min-h-fit   z-50"
-    onClick={ closeAddProduct}
-  >
-    <div className="p-6 bg-gray-300  mx-auto  rounded-lg max-w-4xl h-full w-full" onClick={(e) => e.stopPropagation()}>
-     
-      <div className="bg-white shadow rounded-lg p-6 mb-6">
-        <h2 className="text-2xl font-semibold mb-4">Add Product</h2>
-        <form onSubmit={handleAddProduct}>
-          <div className="flex justify-center space-x-4">
-          <div className="mb-4 w-1/2">
-            <label className="block text-sm font-medium text-gray-700">Name</label>
-            <input
-              type="text"
-              value={newProduct.name}
-              onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-              required
-            />
-          </div>
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={onClose}
+      className="p-6 bg-white  max-w-xl mx-auto mt-20 rounded shadow"
+      overlayClassName="absolute inset-0  bg-black bg-opacity-50 flex items-center justify-center"
+    >
+      <h2 className="text-lg font-bold mb-4">{isEdit ? "Edit Product" : "Add Product"}</h2>
 
-          <div className="w-1/2">
-              <label className=" text-sm block font-medium text-gray-700">
-                Category
-              </label>
-              <select
-              required
-                className="mt-1  w-full border rounded-lg p-2 focus:ring-indigo-500 focus:border-indigo-500"
-                value={newProduct.category}
-                onChange={(e) =>
-                  setNewProduct({ ...newProduct, category: e.target.value })
-                }
-              >
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
-            </div>
-          </div>
-          
+      {error && <p className="text-red-600 mb-2">{error}</p>}
 
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Description</label>
-            <textarea
-              value={newProduct.description}
-              onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-            />
-          </div>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <input
+          type="text"
+          name="productName"
+          placeholder="Product Name"
+          value={formData.productName}
+          onChange={handleChange}
+          className="w-full border p-2 rounded"
+        />
+        <input
+          type="number"
+          name="price"
+          placeholder="Price"
+          value={formData.price}
+          onChange={handleChange}
+          className="w-full border p-2 rounded"
+        />
+        <input
+          type="number"
+          name="stock"
+          placeholder="Stock"
+          value={formData.stock}
+          onChange={handleChange}
+          className="w-full border p-2 rounded"
+        />
+        <select
+          name="categoryId"
+          value={formData.categoryId}
+          onChange={handleChange}
+          className="w-full border p-2 rounded"
+        >
+          <option value={1}>Male</option>
+          <option value={2}>Female</option>
+        </select>
+        <textarea
+          name="description"
+          placeholder="Description"
+          value={formData.description}
+          onChange={handleChange}
+          className="w-full border p-2 rounded"
+        />
+        <input
+          type="text"
+          name="image"
+          placeholder="Image URL"
+          value={formData.image}
+          onChange={handleChange}
+          className="w-full border p-2 rounded"
+        />
 
-           {/* Sizes */}
-           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Sizes
-            </label>
-            <div className="grid grid-cols-3 gap-2 mt-2">
-              {[4,5, 6, 7, 8, 9, 10, 11, 12].map((size) => (
-                <div key={size} className="flex items-center justify-center">
-                  <input
-                    type="checkbox"
-                    checked={newProduct.size.includes(size)}
-                    onChange={() => handleSizeChange(size)}
-                    className="w-4 h-4 text-indigo-600 border-gray-300 rounded"
-                  />
-                  <span className="ml-2 text-sm">{size}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+        {imagePreview && (
+          <img
+            src={imagePreview}
+            alt="Preview"
+            className="w-full h-40 object-contain border rounded"
+            onError={() => setImagePreview("/api/placeholder/200/200")}
+          />
+        )}
 
-          <div className="mb-4 flex gap-4">
-            <div className="w-1/2">
-              <label className="block text-sm font-medium text-gray-700">Price</label>
-              <input
-              required
-                type="number"
-                value={newProduct.price}
-                onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-              />
-            </div>
+        <input
+          type="file"
+          name="image"
+          accept="image/*"
+          onChange={(e) => {
+            const file = e.target.files[0];
+            setImagePreview(URL.createObjectURL(file));
+            setFormData((prev) => ({
+              ...prev,
+              ImageFile: file,
+            }));
+          }}
 
-            <div className="w-1/2">
-              <label className="block text-sm font-medium text-gray-700">Stock</label>
-              <input
-              required
-                type="number"
-                value={newProduct.stock}
-                onChange={(e) => setNewProduct({ ...newProduct, stock: parseInt(e.target.value) })}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-              />
-            </div>
-          </div>
+          className="w-full border p-2 rounded"
+        />
 
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Image URL</label>
-            <input
-              type="url"
-              value={newProduct.image_url}
-              onChange={(e) => setNewProduct({ ...newProduct, image_url: e.target.value })}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-            />
-          </div>
+
+        <div className="flex justify-end space-x-2 mt-4">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-5 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300 transition-colors"
+          >
+            Cancel
+          </button>
 
           <button
             type="submit"
-            className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600"
+            disabled={isSubmitting}
+            className="px-4 py-2 bg-indigo-600 text-white rounded"
           >
-            Add Product
+            {isSubmitting ? "Saving..." : isEdit ? "Update" : "Add"}
           </button>
-        </form>
-      </div>
-    </div>
-    </div>
+        </div>
+      </form>
+    </Modal>
   );
-}
+};
 
-export default AddProduct;
+export default ProductFormModal;

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "./userContext.jsx";
-import axios from "axios";
 import Navbar from "./Navbar.jsx";
 import Footer from "../Base/footer.jsx";
+import { ShoppingCart, Trash2, Plus, Minus, ArrowRight, Package } from "lucide-react";
+import toast from "react-hot-toast";
+import axiosAuth from "../api/axiosAuth.jsx";
 
 function Cart() {
-  const { user, priceHandle , toPurchase} = useUser();
+  const { user, priceHandle, toPurchase } = useUser();
   const navigate = useNavigate();
   const [userCart, setUserCart] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,168 +16,225 @@ function Cart() {
 
   useEffect(() => {
     if (user) {
-      axios
-        .get(`http://localhost:3000/users/${user.id}`)
-        .then((response) => {
-          const updatedCart = response.data.cart.map((product) =>
-           (!product.itemcount)
-              ? { ...product, itemcount: 1}
-              : product
-          );
-          setUserCart(updatedCart);
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.error("Error fetching user cart", error);
-          setLoading(false);
-        });
+     getCart()
     }
-  },[user]);
-  useEffect(() => {
-    const calculateTotal = userCart.reduce((sum, product) => {
-      return sum + product.price * (product.itemcount || 1);
-    }, 0);
-    setPrice(calculateTotal);
-    priceHandle(calculateTotal);
+  },[user,userCart]);
 
-  }, [userCart]);
+  const getCart=()=>{
+    axiosAuth
+    .get(`http://plashoe.runasp.net/api/Cart/${user.id}`)
+    .then((response) => {
+     
+setPrice(response.data.data.totalPrice)
+      setUserCart(response.data.data.items);
+      setLoading(false);
+    })
+    .catch((error) => {
+      setUserCart([])
+      console.error("Error fetching user cart", error);
+      setLoading(false);
+    });
+  }
 
   const handleRemove = (productId) => {
-    console.log(productId);
-    const updatedCart = userCart.filter((product) => product.id !== productId);
-    
-    axios
-      .patch(`http://localhost:3000/users/${user.id}`, { cart: updatedCart })
-      .then(() => {
-        setUserCart(updatedCart);
-        console.log("Deleted");
+
+    axiosAuth
+      .delete(`http://plashoe.runasp.net/api/Cart/remove/${user.id}/${productId}`)
+      .then((res) => {
+        console.log(res.data)
+        toast.success(res.data.message)
+        console.log(userCart)
+        setUserCart(userCart.filter((p)=>p.id!=productId))
+        // setUserCart(updatedCart);
       })
       .catch((error) => {
         console.error("Error updating the cart", error);
       });
   };
+
   const handleInc = (productId) => {
-    const updatedCart = userCart.map((product) =>
-      product.id === productId
-        ? { ...product, itemcount: (product.itemcount || 1) + 1 }
-        : product
-    );
-  
-    axios
-      .patch(`http://localhost:3000/users/${user.id}`, { cart: updatedCart })
-      .then(() => {
-        setUserCart(updatedCart);
-        console.log("Cart updated successfully!");
+
+    axiosAuth
+      .patch(`/api/Cart/increase/${user.id}/${productId}`).then((res)=>{
+        console.log(res.data)
+        getCart()
       })
-      .catch((error) => {
-        console.error("Error updating the cart", error);
-      });
   };
-  
+
   const handleDec = (productId) => {
-    const updatedCart = userCart.map((product) =>
-      product.id === productId
-        ? {
-            ...product,
-            itemcount: Math.max(1, (product.itemcount || 1) - 1),
-          }
-        : product
-    );
-  
-    axios
-      .patch(`http://localhost:3000/users/${user.id}`, { cart: updatedCart })
-      .then(() => {
-        setUserCart(updatedCart);
-        console.log("Cart updated successfully!");
+    axiosAuth
+      .patch(`/Cart/decrease/${user.id}/${productId}`).then((res)=>{
+        console.log(res.data.message)
+        // const type= d
+        res.data.statusCode == 200? toast.success(res.data.message) : toast.error(res.data.message) 
+        
+        getCart()
       })
-      .catch((error) => {
-        console.error("Error updating the cart", error);
-      });
   };
-  
+
+  const getEstimatedDelivery = () => {
+    const today = new Date();
+    const deliveryDate = new Date(today);
+    deliveryDate.setDate(today.getDate() + 3);
+    return deliveryDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+  };
 
   return (
-    <div>
-      <div className="bg-stone-400 pb-10">
-        <Navbar />
-        <h1 className="text-3xl md:text-4xl font-bold mt-8 mb-8">Your Cart</h1>
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-stone-400 to-stone-200">
+      <div className="">
+      <Navbar />
+        </div>
+      
+      <div className="flex-grow container mx-auto px-4 py-8">
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-stone-800 flex items-center">
+            <ShoppingCart className="mr-3" />
+            Your Cart
+          </h1>
+          {userCart.length > 0 && (
+            <span className="bg-stone-800 text-white px-3 py-1 rounded-full text-sm">
+              {userCart.length} {userCart.length === 1 ? 'item' : 'items'}
+            </span>
+          )}
+        </div>
 
         {loading ? (
-          <p className="mb-52">Some Errors are Found, Try Again Later!</p>
+          <div className="flex flex-col items-center justify-center py-16">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-stone-800 mb-4"></div>
+            <p className="text-stone-600">Loading your cart...</p>
+          </div>
         ) : userCart.length === 0 ? (
-          <p className="text-center justify-center mb-52">
-            Your cart is empty.
-          </p>
+          <div className="bg-white rounded-xl shadow-md p-10 flex flex-col items-center justify-center">
+            <Package size={64} className="text-stone-400 mb-4" />
+            <h2 className="text-2xl font-semibold text-stone-800 mb-2">Your cart is empty</h2>
+            <p className="text-stone-500 mb-6 text-center">Looks like you haven't added any products to your cart yet.</p>
+            <button 
+              onClick={() => navigate('/products')}
+              className="bg-stone-800 hover:bg-stone-900 text-white font-medium py-3 px-6 rounded-lg transition duration-300"
+            >
+              Start Shopping
+            </button>
+          </div>
         ) : (
-          <div>
-            <ul>
-              {userCart.map((product, index) => (
-               <li key={index} className="flex justify-center items-center py-3">
-               <div className="flex flex-col md:flex-row items-center md:w-2/4 w-5/6 pb-3 md:pb-0 bg-[#fafafa] rounded-2xl ps-10 pe-10">
-                 <div>
-                   <img
-                     src={product.image_url}
-                     alt={product.name}
-                     className="w-60 h-60 m-2 object-cover mr-4"
-                   />
-                 </div>
-             
-                 <div className=" mt-4 md:mt-0">
-                   <h3 className="text-xl text-center mb-4">{product.name}</h3>
-                   <p className="text-gray-600 text-sm">
-                     Sizes: {product.size.toString()} 
-                   </p>
-                   <p className="text-gray-900 font-bold mb-5">${product.price}.00</p>
-                   <div className="mb-2 flex justify-center text-center">
-                     <p className="text-xs mt-1 me-1">Quantity : </p>
-                     <button
-                       onClick={() => handleDec(product.id)}
-                       className="bg-stone-200 px-1.5 py-0.5 rounded-md text-sm text-center me-2"
-                     >
-                       -
-                     </button>
-                     {product.itemcount }
-                     <button
-                       onClick={() => handleInc(product.id)}
-                       className="bg-stone-200 px-1.5 py-0.5 rounded-md text-xs text-center ms-2"
-                     >
-                       +
-                     </button>
-                   </div>
-             
-                   <button
-                     onClick={() => handleRemove(product.id)}
-                     className="text-gray-700 mb-2 text-xs"
-                   >
-                     Remove from Cart
-                   </button>
-                 </div>
-               </div>
-             </li>
-             
-              ))}
-            </ul>
-
-            <div className="mt-6">
-              <h2 className="text-2xl font-bold text-gray-900 mt-4 ">
-                Total Amount :{" "}
-                <span className="text-2xl font-bold text-white">${price}</span>
-              </h2>
-
-              <button
-                className="text-black"
-                onClick={() =>{
-                  navigate("/payment")
-                  // handleOrders(userCart)
-                  toPurchase(userCart)
-                } }
-              >
-                Check Out
-              </button>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2">
+              <div className="bg-white rounded-xl shadow-md overflow-hidden">
+                <div className="p-6 border-b border-stone-100">
+                  <h2 className="text-xl font-semibold text-stone-800">Cart Items</h2>
+                </div>
+                
+                <ul className="divide-y divide-stone-100">
+                  {userCart.map((product, index) => (
+                    <li key={index} className="p-6 transition-all hover:bg-stone-50">
+                      <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0">
+                        <div className="relative w-24 h-24 md:w-32 md:h-32 bg-stone-100 rounded-lg overflow-hidden mr-0 md:mr-6">
+                          <img
+                            src={product.image}
+                            alt={product.productName}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        
+                        <div className="flex-grow flex flex-col md:flex-row items-center md:items-start md:justify-between w-full">
+                          <div className="text-center md:text-left mb-4 md:mb-0">
+                            <h3 className="text-lg font-medium text-stone-800 mb-1">{product.productName}</h3>
+                            {/* <p className="text-stone-500 text-sm mb-2">
+                              Sizes: {product.size}
+                            </p> */}
+                            <p className="text-stone-800 font-bold">${product.price}.00</p>
+                          </div>
+                          
+                          <div className="flex flex-col items-center space-y-3">
+                            <div className="flex items-center bg-stone-100 rounded-lg overflow-hidden">
+                              <button
+                                onClick={() => handleDec(product.productId)}
+                                className="px-3 py-2 text-stone-600 hover:bg-stone-200 transition"
+                                aria-label="Decrease quantity"
+                              >
+                                <Minus size={16} />
+                              </button>
+                              <span className="px-4 py-2 font-medium text-stone-800">
+                                {product.quantity}
+                              </span>
+                              <button
+                                onClick={() => handleInc(product.productId)}
+                                className="px-3 py-2 text-stone-600 hover:bg-stone-200 transition"
+                                aria-label="Increase quantity"
+                              >
+                                <Plus size={16} />
+                              </button>
+                            </div>
+                            
+                            <button
+                              onClick={() => handleRemove(product.productId)}
+                              className="flex items-center text-stone-500 hover:text-red-500 text-sm transition-colors"
+                            >
+                              <Trash2 size={14} className="mr-1" />
+                              Remove
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+            
+            <div className="lg:col-span-1">
+              <div className="bg-white rounded-xl shadow-md overflow-hidden sticky top-5">
+                <div className="p-6 border-b border-stone-100">
+                  <h2 className="text-xl font-semibold text-stone-800">Order Summary</h2>
+                </div>
+                
+                <div className="p-6">
+                  <div className="space-y-4">
+                    <div className="flex justify-between text-stone-600">
+                      <span>Subtotal ({userCart.length} items)</span>
+                      <span>${price}.00</span>
+                    </div>
+                    
+                    <div className="flex justify-between text-stone-600">
+                      <span>Shipping</span>
+                      <span>Free</span>
+                    </div>
+                    
+                    <div className="pt-4 border-t border-stone-100">
+                      <div className="flex justify-between text-lg font-semibold text-stone-800">
+                        <span>Total</span>
+                        <span>${price}.00</span>
+                      </div>
+                      <div className="text-stone-500 text-sm mt-1">
+                        Estimated delivery: {getEstimatedDelivery()}
+                      </div>
+                    </div>
+                    
+                    <button
+                      onClick={() => {
+                        priceHandle(price)
+                        navigate("/payment");
+                        toPurchase(userCart);
+                      }}
+                      className="w-full bg-stone-800 hover:bg-stone-900 text-white font-medium py-4 rounded-lg mt-4 flex items-center justify-center transition duration-300"
+                    >
+                      Proceed to Checkout
+                      <ArrowRight className="ml-2" size={18} />
+                    </button>
+                    
+                    <button
+                      onClick={() => navigate("/products")}
+                      className="w-full text-stone-600 hover:text-stone-800 font-medium py-2 rounded-lg mt-2 text-center transition duration-300"
+                    >
+                      Continue Shopping
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}
       </div>
+      
       <Footer />
     </div>
   );

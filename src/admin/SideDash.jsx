@@ -9,10 +9,9 @@ import { useNavigate } from "react-router";
 function SideDash() {
     const navigate=useNavigate()
   return (
-    <div>
-      <div className="bg-gray-600 h-full p-2">
+      <div className="bg-gray-600 min-h-full p-2">
 
-         <div className="flex items-center justify-center p-4  ">
+         <div className="flex items-center justify-center p-4 min-h-full  ">
                   <img
                     className="md:w-8 md:h-8 h-4 w-4 md:me-3 me-1  cursor-pointer"
                     onClick={() => navigate("/dash")}
@@ -67,7 +66,7 @@ function SideDash() {
         </div>
         <div onClick={() => {
                     localStorage.removeItem("id");
-
+                    localStorage.clear()
                     navigate("/");
                     window.location.reload();
                   }} className="flex text-white md:p-6 py-5 items-center justify-center hover:bg-gray-500 hover:rounded-lg border-b border-spacing-10 border-gray-500">
@@ -81,7 +80,6 @@ function SideDash() {
           </div>
         </div>
       </div>
-    </div>
   );
 }
 

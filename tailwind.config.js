@@ -7,6 +7,8 @@ export default {
   theme: {
     extend: {
       colors: {
+        antiquewhite: '#faebd7',
+        dusty: '#d2b49f',
         beige: '#F5F5DC',
         brown: {
           50: '#f5f1eb',   // lightest brown
