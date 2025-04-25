@@ -1,11 +1,8 @@
 import axios from "axios";
 
 const axiosAuth = axios.create({
-  baseURL: import.meta.env.DEV
-    ? "http://plashoe.runasp.net/api"
-    : "/proxy"
+  baseURL: "/api"
 });
-
 
 axiosAuth.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
