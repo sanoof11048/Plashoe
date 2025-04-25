@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosAuth = axios.create({
-  baseURL: "/api"
+  baseURL: "http://plashoe.runasp.net/api"
 });
 
 axiosAuth.interceptors.request.use((config) => {

@@ -17,6 +17,7 @@ export const ProductProvider = ({ children }) => {
     setIsLoading(true);
     axiosAuth.get("/Product/get-all")
       .then((res) => {
+        console.log(res.data);
         setProducts(res.data);
         setFilterProducts(res.data);
       })
