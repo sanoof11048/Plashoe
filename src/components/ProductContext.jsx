@@ -19,11 +19,8 @@ export const ProductProvider = ({ children }) => {
   .then(response => console.log(response))
   .catch(error => console.log(error));
     setIsLoading(true);
-    axiosAuth.get("/api/proxy", {
-      params: {
-        path: "Product/get-all"
-      }
-    })
+    axiosAuth.get("/api/proxy?path=Product/get-all")
+
     
       .then((res) => {
         console.log(res);
