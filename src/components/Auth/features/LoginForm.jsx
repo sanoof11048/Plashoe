@@ -6,6 +6,7 @@ import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../userContext";
 import InputBox from "../InputBox";
+import axiosAuth from "../../../api/axiosAuth";
 
 const initialValues = {
   email: "sanoof",
@@ -27,7 +28,7 @@ const LoginForm = ({ setIsLogin }) => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const response = await axios.post("http://plashoe.runasp.net/api/auth/login", values);
+      const response = await axiosAuth.post("/auth/login", values);
   
       const user = response.data;
       toast.success(user.email === "admin@gmail.com" ? "Welcome Admin" : "Login Successful");
