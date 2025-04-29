@@ -40,12 +40,20 @@ export const ProductProvider = ({ children }) => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('/api/proxy/Product/get-all') // Instead of 'http://plashoe.runasp.net/api/endpoint'
-      .then(res => res.json())
-      .then(data => console.log(data));
-      console.log(response.data);
+      const response = await fetch("/api/Product/get-all");
+      
+      console.log(response)
+      const data = await response.json();
+      console.log(data);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
     } catch (error) {
-      console.error("Failed to fetch products:", error);
+      setIsLoading(false);
+      console.error("Failed to fetch:", error);
+      // Check if error is due to HTML response
+      const textResponse = await response.text();
+      console.log("Actual response:", textResponse); // Debug HTML error
     }
   };
 
