@@ -56,23 +56,20 @@
 //   }
   
 
-import axios from 'axios';
-
 export default async function handler(req, res) {
-  const { method, body, query } = req;
-  const targetUrl = `http://plashoe.runasp.net/api/${query.path}`;
-
-  try {
-    const response = await axios({
-      method,
-      url: targetUrl,
-      data: body,
-      headers: req.headers,
-    });
-
-    // Forward the response from your backend to the frontend
-    res.status(response.status).json(response.data);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch data', details: error.message });
+    const { path } = req.query;
+    const targetUrl = `http://plashoe.runasp.net/api/${path.join('/')}`;
+  
+    try {
+      const response = await fetch(targetUrl, {
+        method: req.method,
+        headers: req.headers,
+        body: req.method !== 'GET' ? JSON.stringify(req.body) : undefined,
+      });
+      const data = await response.json();
+      res.status(response.status).json(data);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch from API" });
+    }
   }
-}
+  
