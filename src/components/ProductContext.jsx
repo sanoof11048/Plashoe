@@ -40,11 +40,9 @@ export const ProductProvider = ({ children }) => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get('/api/proxy', {
-        params: {
-          path: 'Product/get-all',  // Backend API path
-        },
-      });
+      const response = await fetch("http://plashoe.runasp.net/api", { mode: 'no-cors' })
+      .then(response => response.text())
+      .then(data => console.log(data));
       console.log(response.data);
     } catch (error) {
       console.error("Failed to fetch products:", error);
