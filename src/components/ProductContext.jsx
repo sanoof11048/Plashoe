@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axiosAuth from "../api/axiosAuth";
+import axios from "axios";
 
 const ProductContext = createContext();
 
@@ -14,9 +15,18 @@ export const ProductProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    axios.get('/api/proxy?path=your-api-endpoint')
+  .then(response => console.log(response))
+  .catch(error => console.log(error));
     setIsLoading(true);
-    axiosAuth.get("/Product/get-all")
+    axiosAuth.get("/api/proxy", {
+      params: {
+        path: "Product/get-all"
+      }
+    })
+    
       .then((res) => {
+        console.log(res);
         console.log(res.data);
         setProducts(res.data);
         setFilterProducts(res.data);

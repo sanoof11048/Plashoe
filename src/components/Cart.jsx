@@ -16,24 +16,24 @@ function Cart() {
 
   useEffect(() => {
     if (user) {
-     getCart()
+      getCart()
     }
-  },[user,userCart]);
+  }, [user, userCart]);
 
-  const getCart=()=>{
+  const getCart = () => {
     axiosAuth
-    .get(`http://plashoe.runasp.net/api/Cart/${user.id}`)
-    .then((response) => {
-     
-setPrice(response.data.data.totalPrice)
-      setUserCart(response.data.data.items);
-      setLoading(false);
-    })
-    .catch((error) => {
-      setUserCart([])
-      console.error("Error fetching user cart", error);
-      setLoading(false);
-    });
+      .get(`http://plashoe.runasp.net/api/Cart/${user.id}`)
+      .then((response) => {
+
+        setPrice(response.data.data.totalPrice)
+        setUserCart(response.data.data.items);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setUserCart([])
+        console.error("Error fetching user cart", error);
+        setLoading(false);
+      });
   }
 
   const handleRemove = (productId) => {
@@ -44,8 +44,7 @@ setPrice(response.data.data.totalPrice)
         console.log(res.data)
         toast.success(res.data.message)
         console.log(userCart)
-        setUserCart(userCart.filter((p)=>p.id!=productId))
-        // setUserCart(updatedCart);
+        setUserCart(userCart.filter((p) => p.id != productId))
       })
       .catch((error) => {
         console.error("Error updating the cart", error);
@@ -55,7 +54,7 @@ setPrice(response.data.data.totalPrice)
   const handleInc = (productId) => {
 
     axiosAuth
-      .patch(`/api/Cart/increase/${user.id}/${productId}`).then((res)=>{
+      .patch(`/api/Cart/increase/${user.id}/${productId}`).then((res) => {
         console.log(res.data)
         getCart()
       })
@@ -63,11 +62,11 @@ setPrice(response.data.data.totalPrice)
 
   const handleDec = (productId) => {
     axiosAuth
-      .patch(`/Cart/decrease/${user.id}/${productId}`).then((res)=>{
+      .patch(`/Cart/decrease/${user.id}/${productId}`).then((res) => {
         console.log(res.data.message)
         // const type= d
-        res.data.statusCode == 200? toast.success(res.data.message) : toast.error(res.data.message) 
-        
+        res.data.statusCode == 200 ? toast.success(res.data.message) : toast.error(res.data.message)
+
         getCart()
       })
   };
@@ -82,9 +81,9 @@ setPrice(response.data.data.totalPrice)
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-stone-400 to-stone-200">
       <div className="">
-      <Navbar />
-        </div>
-      
+        <Navbar />
+      </div>
+
       <div className="flex-grow container mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-stone-800 flex items-center">
@@ -108,7 +107,7 @@ setPrice(response.data.data.totalPrice)
             <Package size={64} className="text-stone-400 mb-4" />
             <h2 className="text-2xl font-semibold text-stone-800 mb-2">Your cart is empty</h2>
             <p className="text-stone-500 mb-6 text-center">Looks like you haven't added any products to your cart yet.</p>
-            <button 
+            <button
               onClick={() => navigate('/products')}
               className="bg-stone-800 hover:bg-stone-900 text-white font-medium py-3 px-6 rounded-lg transition duration-300"
             >
@@ -122,7 +121,7 @@ setPrice(response.data.data.totalPrice)
                 <div className="p-6 border-b border-stone-100">
                   <h2 className="text-xl font-semibold text-stone-800">Cart Items</h2>
                 </div>
-                
+
                 <ul className="divide-y divide-stone-100">
                   {userCart.map((product, index) => (
                     <li key={index} className="p-6 transition-all hover:bg-stone-50">
@@ -134,7 +133,7 @@ setPrice(response.data.data.totalPrice)
                             className="w-full h-full object-cover"
                           />
                         </div>
-                        
+
                         <div className="flex-grow flex flex-col md:flex-row items-center md:items-start md:justify-between w-full">
                           <div className="text-center md:text-left mb-4 md:mb-0">
                             <h3 className="text-lg font-medium text-stone-800 mb-1">{product.productName}</h3>
@@ -143,7 +142,7 @@ setPrice(response.data.data.totalPrice)
                             </p> */}
                             <p className="text-stone-800 font-bold">${product.price}.00</p>
                           </div>
-                          
+
                           <div className="flex flex-col items-center space-y-3">
                             <div className="flex items-center bg-stone-100 rounded-lg overflow-hidden">
                               <button
@@ -164,7 +163,7 @@ setPrice(response.data.data.totalPrice)
                                 <Plus size={16} />
                               </button>
                             </div>
-                            
+
                             <button
                               onClick={() => handleRemove(product.productId)}
                               className="flex items-center text-stone-500 hover:text-red-500 text-sm transition-colors"
@@ -180,25 +179,25 @@ setPrice(response.data.data.totalPrice)
                 </ul>
               </div>
             </div>
-            
+
             <div className="lg:col-span-1">
               <div className="bg-white rounded-xl shadow-md overflow-hidden sticky top-5">
                 <div className="p-6 border-b border-stone-100">
                   <h2 className="text-xl font-semibold text-stone-800">Order Summary</h2>
                 </div>
-                
+
                 <div className="p-6">
                   <div className="space-y-4">
                     <div className="flex justify-between text-stone-600">
                       <span>Subtotal ({userCart.length} items)</span>
                       <span>${price}.00</span>
                     </div>
-                    
+
                     <div className="flex justify-between text-stone-600">
                       <span>Shipping</span>
                       <span>Free</span>
                     </div>
-                    
+
                     <div className="pt-4 border-t border-stone-100">
                       <div className="flex justify-between text-lg font-semibold text-stone-800">
                         <span>Total</span>
@@ -208,7 +207,7 @@ setPrice(response.data.data.totalPrice)
                         Estimated delivery: {getEstimatedDelivery()}
                       </div>
                     </div>
-                    
+
                     <button
                       onClick={() => {
                         priceHandle(price)
@@ -220,7 +219,7 @@ setPrice(response.data.data.totalPrice)
                       Proceed to Checkout
                       <ArrowRight className="ml-2" size={18} />
                     </button>
-                    
+
                     <button
                       onClick={() => navigate("/products")}
                       className="w-full text-stone-600 hover:text-stone-800 font-medium py-2 rounded-lg mt-2 text-center transition duration-300"
@@ -234,7 +233,7 @@ setPrice(response.data.data.totalPrice)
           </div>
         )}
       </div>
-      
+
       <Footer />
     </div>
   );
