@@ -40,8 +40,8 @@ export const ProductProvider = ({ children }) => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch("http://plashoe.runasp.net/api", { mode: 'no-cors' })
-      .then(response => response.text())
+      const response = await fetch('/api/proxy/Product/get-all') // Instead of 'http://plashoe.runasp.net/api/endpoint'
+      .then(res => res.json())
       .then(data => console.log(data));
       console.log(response.data);
     } catch (error) {
