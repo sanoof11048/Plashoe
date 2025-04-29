@@ -15,26 +15,42 @@ export const ProductProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    axios.get('/api/proxy?path=your-api-endpoint')
-  .then(response => console.log(response))
-  .catch(error => console.log(error));
-    setIsLoading(true);
-    axiosAuth.get("/api/proxy?path=Product/get-all")
+  //   axios.get('/api/proxy?path=Product/get-all')
+  // .then(response => console.log(response))
+  // .catch(error => console.log(error));
+  //   setIsLoading(true);
+  //   axiosAuth.get("?path=Product/get-all")
 
     
-      .then((res) => {
-        console.log(res);
-        console.log(res.data);
-        setProducts(res.data);
-        setFilterProducts(res.data);
-      })
-      .catch(error => {
-        console.error("Failed to fetch products:", error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+  //     .then((res) => {
+  //       console.log(res);
+  //       console.log(res.data);
+  //       setProducts(res.data);
+  //       setFilterProducts(res.data);
+  //     })
+      // .catch(error => {
+      //   console.error("Failed to fetch products:", error);
+      // })
+      // .finally(() => {
+      //   setIsLoading(false);
+      // });
+
+      fetchProducts();  
   }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get('/api/proxy', {
+        params: {
+          path: 'Product/get-all',  // Backend API path
+        },
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error("Failed to fetch products:", error);
+    }
+  };
+
 
   const toSearch = (searchValue) => {
     if (!searchValue.trim()) {
